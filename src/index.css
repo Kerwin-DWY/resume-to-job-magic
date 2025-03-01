@@ -68,6 +68,7 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   }
 }
 
@@ -104,4 +105,44 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
+}
+
+@keyframes text-reveal {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-text-reveal {
+  animation: text-reveal 0.5s cubic-bezier(0.5, 0, 0.1, 1) forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 2s ease-in-out infinite;
 }
