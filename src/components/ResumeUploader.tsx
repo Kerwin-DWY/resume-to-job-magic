@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { GlassCard } from './GlassCard';
 import { Upload, Check, AlertCircle } from 'lucide-react';
@@ -34,8 +33,10 @@ export const ResumeUploader = ({ onFileProcessed }: ResumeUploaderProps) => {
     setIsUploading(false);
     setUploadProgress(0);
     setIsDragging(false);
+    setIsSuccess(false);
+    setFileName('');
   };
-  
+
   const processFile = (file: File) => {
     if (!file) return;
     
@@ -55,38 +56,38 @@ export const ResumeUploader = ({ onFileProcessed }: ResumeUploaderProps) => {
     setError('');
     
     // Simulate file upload progress
+    let progress = 0;
     const intervalId = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(intervalId);
-          return 100;
-        }
-        return prev + 5;
-      });
+      progress += 10;
+      setUploadProgress(progress);
+
+      if (progress >= 100) {
+        clearInterval(intervalId);
+      }
     }, 100);
-    
-    // For this demo, just read the file as text
+
+    // Read the file content
     const reader = new FileReader();
-    
+
     reader.onload = (event) => {
       const fileContent = event.target?.result as string;
       clearInterval(intervalId);
       setUploadProgress(100);
       
       setTimeout(() => {
-        setIsSuccess(true);
         setIsUploading(false);
-        
+        setIsSuccess(true); // ✅ Ensure success message shows
+
         // Pass the file content to the parent component
         onFileProcessed(fileContent, file.name);
-        
+
         toast({
           title: "Resume uploaded successfully",
           description: "We're now processing your resume...",
         });
       }, 1000);
     };
-    
+
     reader.onerror = () => {
       clearInterval(intervalId);
       setError('Error reading file');
@@ -97,7 +98,7 @@ export const ResumeUploader = ({ onFileProcessed }: ResumeUploaderProps) => {
       });
       resetState();
     };
-    
+
     reader.readAsText(file);
   };
   
@@ -156,7 +157,7 @@ export const ResumeUploader = ({ onFileProcessed }: ResumeUploaderProps) => {
               type="file"
               accept=".pdf,.doc,.docx,.txt"
               onChange={handleFileSelect}
-              className="input-file"
+              className="input-file hidden"
             />
             {error && (
               <div className="text-destructive flex items-center mt-4">
