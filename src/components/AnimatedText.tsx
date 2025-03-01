@@ -13,7 +13,7 @@ interface AnimatedTextProps {
 export const AnimatedText = ({
   text,
   className,
-  el: Wrapper = 'h1',
+  el = 'h1',
   delay = 0,
   once = false,
 }: AnimatedTextProps) => {
@@ -44,8 +44,10 @@ export const AnimatedText = ({
     };
   }, [once]);
   
+  const Component = el as React.ElementType;
+  
   return (
-    <Wrapper
+    <Component
       ref={textRef}
       className={cn('opacity-0', className)}
       style={{ animationDelay: `${delay}ms` }}
@@ -61,6 +63,6 @@ export const AnimatedText = ({
           </span>
         ))}
       </span>
-    </Wrapper>
+    </Component>
   );
 };
